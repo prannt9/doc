@@ -37,8 +37,11 @@
     - [PointASNL](PointCloud/Attention/PointASNL/)
     - [GAC](PointCloud/Attention/GAC/)
     
+  
+  - [GAN](PointCloud/GAN/)
+    - [Generative](PointCloud/GAN/Generative/)
+  
   - [**Others**](PointCloud/Others/)
-    
     - [NCM](PointCloud/Others/NCM/)
     - [CRF](PointCloud/Others/CRF/)
     - [Omni-Supervised](PointCloud/Others/Omni-Supervised/)
