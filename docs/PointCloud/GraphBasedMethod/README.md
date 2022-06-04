@@ -2,6 +2,6 @@
 
 ---
 
-<br><br>
+<br>
 
 ![](https://cdn.jsdelivr.net/gh/prannt99/blog/img/17.png)
