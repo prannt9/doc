@@ -48,18 +48,65 @@ GAN(生成对抗网络)，全篇的写作都值得效仿!当然摘要也值得�
 
 #### 公式化
 
-$$
+```
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width">
+  <script type="text/javascript" async
+  src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML" async>
+</script>
+</head>
+<body>
+<p>
 \min_{G} \max_{D}V(D,G) = E_{x\sim p_{data}(x)}[logD(x)] + E_{z\sim p_{z}(z)}[log(1-D(G(z)))]
-$$
+</p>
+</body>
+</html>
+```
 
 同时训练`G`和`D`，使得混淆程度变高、辨别能力增强。
 
 分析：优化`D` -> logD(x) ↑ -> V(D，G) ↑；优化`G` -> G(z) ↑ -> D(G(z)) ↑ -> log(1 - D(G(z))) ↓(自己的理解)
 
 以下是数学推导过程：式中G(z)是`fake data`。在训练`D`的时候，`G`是固定的。
-$$
+
+```
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width">
+  <script type="text/javascript" async
+  src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML" async>
+</script>
+</head>
+<body>
+<p>
 target:\max_{D}V(D,G) = E_{x\sim p_{data}(x)}[logD(x)] + E_{z\sim p_{z}(z)}[log(1-D(G(z)))]\\=\int_{x}p_{data}(x)·logD(x) + \int_{x} p_{g}(x)·log(1-D(x))dx\\=\int_{x}[p_{data}(x)·logD(x)+p_{g}(x)·log(1-D(x))]dx\\对于f(g)=a·log(g)+b·log(1-g),有:\\ \nabla f = a·\frac{1}{g}-b·\frac{1}{1-g}=\frac{a-(a+b)·g}{g(1-g)}\\ 当且仅当g=\frac{a}{a+b}时，\nabla f=0，f(g)可取到最大值,所以当D训练的足够好时，有：\\ D^*(x)=\frac{p_{data}(x)}{p_{data}(x)+p_{g}(x)}，使得V(D,G)最大
-$$
+</p>
+</body>
+</html>
+```
+
+同时训练`G`和`D`，使得混淆程度变高、辨别能力增强。
+
+分析：优化`D` -> logD(x) ↑ -> V(D，G) ↑；优化`G` -> G(z) ↑ -> D(G(z)) ↑ -> log(1 - D(G(z))) ↓(自己的理解)
+
+以下是数学推导过程：式中G(z)是`fake data`。在训练`D`的时候，`G`是固定的。
+
+对于有当且仅当时，，可取到最大值所以当训练的足够好时，有：，使得最大
+
+训练`G`的时候情况类似。
+
+GANs是通过最小化`JS散度`去拟合两个分布。 当p<sub>g</sub>(x) = p<sub>data</sub>(x)时，V(G, D<sup>*</sup>)取最小值`-log4`，此时`D = 0.5`
+
+### 思考
+
+在应用上，是否可以使用GAN来生成点云?或者代替一些数据增强的方法.
+
+
 
 训练`G`的时候情况类似。
 
