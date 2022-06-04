@@ -66,20 +66,20 @@
 
 流程：
 
-- 输入(N，3 + d) -> Shared MLP(N，d<sup>out</sup> / 2) -> 3D coordinates -> LocSE(N，d<sup>out</sup>)
-  - shared MLP将d<sup>in</sup>变为d<sup>out</sup> / 2
+- 输入(N，3 + d) -> Shared MLP(N，d<sub>out</sub> / 2) -> 3D coordinates -> LocSE(N，d<sub>out</sub>)
+  - shared MLP将d<sub>in</sub>变为d<sub>out</sub> / 2
   - 然后进行`3d`坐标嵌入
   - LocSE
     - (N，3 + d) -> (1, 3 + d) -> KNN -> (K, 3 + d)
       1. -> (k，d)(仅取K个点的特征)
       2. -> (K, 3)(仅取K个点的三维坐标) -> Positional Encoding -> (K，d)
       3. concatenate(1，2)
-- -> Attentive Pooling(N，d<sup>out</sup> / 2)
-  - 上一步concatenate得到(K，2d) -> 点乘size也为(K，2d)的Attention Scores -> 得到Attention Features(K，2d) -> 权重求和 -> Shared MLP -> Aggregated Feature(1，d<sup>out</sup>)
+- -> Attentive Pooling(N，d<sub>out</sub> / 2)
+  - 上一步concatenate得到(K，2d) -> 点乘size也为(K，2d)的Attention Scores -> 得到Attention Features(K，2d) -> 权重求和 -> Shared MLP -> Aggregated Feature(1，d<sub>out</sub>)
     - Attention Scores是使用`g()`函数计算`上一步concatenate得到(K，2d)`得到的，`g()`本质上就是`shared MLP` + `softmax`
-- -> 3D coordinates -> LocSE(N，d<sup>out</sup>) + Attentive Pooling(N，d<sup>out</sup>) -> Shared MLP(N，2d<sup>out</sup>)
+- -> 3D coordinates -> LocSE(N，d<sub>out</sub>) + Attentive Pooling(N，d<sub>out</sub>) -> Shared MLP(N，2d<sub>out</sub>)
 - -> + Input Point Features -> Leaky Relu 
-- -> Aggregated Features(N，2d<sup>out</sup>)
+- -> Aggregated Features(N，2d<sub>out</sub>)
 
 
 
