@@ -27,6 +27,7 @@
     - [Weakly](PointCloud/SemiSupervised/Weakly/)
   - [**Attention**](PointCloud/Attention/)
     - [Attetion Is All You Need](PointCloud/Attention/AttentionIsAllYouNeed/)
+    - [ViT](PointCloud/Attention/ViT/)
     - [PCT](PointCloud/Attention/PCT/)
     - [ExternalAttention](PointCloud/Attention/ExternalAttention/)
     - [PTANet](PointCloud/Attention/PTANet/)
