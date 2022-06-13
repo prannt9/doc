@@ -79,6 +79,7 @@
   - [**0x00000011**](https://sspai.com/)
 - **在线技术文档🪐**
   - [**Git中文教程**](https://git-scm.com/book/zh/v2)
+  - [**Linux速查文档**](https://www.linuxcool.com/)
   - [**SVN中文手册**](http://svnbook.red-bean.com/nightly/zh/index.html)
   - [**jQuery API中文文档**](https://jquery.cuishifeng.cn/)
   - [**Nginx中文文档**](https://www.nginx.cn/doc/index.html)

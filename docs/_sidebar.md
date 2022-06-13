@@ -6,28 +6,25 @@
     - [KPConv](PointCloud/PointBasedMethod/KPConv/)
     - [Unified](PointCloud/PointBasedMethod/Unified/)
     - [PointCNN](PointCloud/PointBasedMethod/PointCNN/)
-
   - [**Graph Based**](PointCloud/GraphBasedMethod/)
 
     - [General](PointCloud/GraphBasedMethod/General/)
 
     - [GCN1](PointCloud/GraphBasedMethod/GCN1/)
     - [RGCNN](PointCloud/GraphBasedMethod/RGCNN/)
-
   - [**Voxel Based**](PointCloud/VoxelBased/)
 
     - [Voxel1](PointCloud/VoxelBased/Voxel1/) 
-
+  - [**Classical**](PointCloud/)
+    - [SaliencyDetection](PointCloud/SaliencyDetection/)
   - [**Multi-View Based**](PointCloud/MultiView/)
     - [3DMV](PointCloud/MultiView/3DMV/)
     - [MVP](PointCloud/MultiView/MVP/)
-
   - [**Semi-Supervised**](PointCloud/SemiSupervised/)
     - [ALS](PointCloud/SemiSupervised/ALS/)
     - [SSPC-Net](PointCloud/SemiSupervised/SSPC-Net/)
     - [Semi-Supervised](PointCloud/SemiSupervised/Semi-Supervised/)
     - [Weakly](PointCloud/SemiSupervised/Weakly/)
-
   - [**Attention**](PointCloud/Attention/)
     - [Attetion Is All You Need](PointCloud/Attention/AttentionIsAllYouNeed/)
     - [PCT](PointCloud/Attention/PCT/)
@@ -36,30 +33,25 @@
     - [RGAM](PointCloud/Attention/RGAM/)
     - [PointASNL](PointCloud/Attention/PointASNL/)
     - [GAC](PointCloud/Attention/GAC/)
-
   - [**GAN**](PointCloud/GAN/)
     - [Generative](PointCloud/GAN/Generative/)
-
   - [**Others**](PointCloud/Others/)
     - [NCM](PointCloud/Others/NCM/)
+    - [CBL](PointCloud/Others/CBL/)
     - [CRF](PointCloud/Others/CRF/)
     - [Omni-Supervised](PointCloud/Others/Omni-Supervised/)
     - [DCCNN](PointCloud/Others/DCCNN/)
     - [FCN](PointCloud/Others/FCN/)
     - [FCN2](PointCloud/Others/FCN2/)
-
   - [**Combination**](PointCloud/Combination/)
 
     - [c1](PointCloud/Combination/c1/)
-
   - [**Overview**](PointCloud/Overview/)
 
     - [Survey1](PointCloud/Overview/Survey1/)
-
   - [**Dataset**](PointCloud/Dataset/)
 
     - [SemanticKITTI](PointCloud/Dataset/SemanticKITTI/)
-
   - [**BIM**](PointCloud/BIM/)
     - [BIM1](PointCloud/BIM1/)
     - [MRF](PointCloud/BIM/MRF/)
