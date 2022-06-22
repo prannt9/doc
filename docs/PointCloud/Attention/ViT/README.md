@@ -44,7 +44,7 @@ Inductive Bias(归纳偏置)：指的是一种先验知识，提前做好的假�
 
 ### Conclusion
 
-和之前的工作不同之处在于：除了在刚开始把图片打成patch，并未引入图像特有的归纳偏置，这样的好处就是不需要对Vision领域有什么了解或者domain knowledge。
+和之前的工作不同之处在于：除了在刚开始把图片打成patch，并未引入图像特有的归纳偏置，这样的好处就是不需要对Vision领域有什么了解或者domain knowledge。这一简单、扩展性好的策略跟大规模预训练结合起来时，效果出奇的好。
 
 ### Related Work
 
@@ -67,3 +67,35 @@ Inductive Bias(归纳偏置)：指的是一种先验知识，提前做好的假�
 - 得到了一个一个的token之后，接下来的工作和NLP就一样了，输入进**Transformer Encoder**，**Transformer Encoder**会得到很多输出。那问题来了，这么多输出，该拿哪个输出去做最后的分类呢？借鉴BERT，BERT中有`Extra Learnable Embedding(分类字符)，图中用0*代替`
   - embedded patches -> Layer Normalization -> Multi-Head Attention
 - 因为token和token之间在做交互，所以`分类字符`能够从别的`embedding`里学到信息，从而只需要根据`分类字符`的对应输出做最后的判断就可以了
+
+前向过程总结：
+
+- 假设有张图片(224 x 224 x 3)，如果使用16 x 16的patch size，就会得到14 x 14 = 196个图像块，每个图像块的维度为16 x 16 x 3 = 768，所以原始图片就被变为了：224 x 224 x 3 -> 196 x 768；
+- 线性投射层就是全连接层(E)，其维度为：768 x 768(后面的768就是文中说的D，D是可以变的，但是前面的768是从图像的patch算出的(16 x 16 x 3)，这个是不变的)；
+- 经过线性投射层就得到了patch embedding(X · E = 196 x 768)，然后再乘以(768, 768)的矩阵，最后得到的还是(196, 768)，意思是：有196个图像块，每个图像块的维度是768；
+- 到现在为止，就成功的把Vision的问题变为了NLP的问题。输入说一系列**1d**的token，**而非2d**的图了；
+- 除了图像本身的token，还要加一个额外的cls token(借鉴BERT，维度为1 x 768)，可以直接拼接。所以最后序列的长度就是整体进入Transformer的长度+1(196 + 1 = 197)，最后的尺寸为197 x 768；
+- 1，2，3，...，9只是序号，而非我们真正使用的位置编码，因为不可能把数字传给Transformer去学。具体的做法是，维护一张表，表里的每一行代表了1，2，3，...，9这些序号，每一行是一个向量(该向量的维度 = D的维度(768))，这个向量是可以学的，然后把位置信息和token信息进行相加(注意是sum，不是concat)，加完之后的序列还是197 x 768；
+- 如上图(右图)所示，也就是说Transformer Encoder的输入Embedded patches的维度上197 x 768，进入Layer Norm，输出还是197 x 768，然后进入Multi-Head Attention，变成了三份(k,q,v)，每一份都是197 x 768，由于做的是多头自注意力，所以最后的维度并非768，假设用的是ViT的base版本(多头用了12个头)，维度就变成了768➗12=64，也就是说(k,q,v)都变为了197 x 64(12个(k,q,v)去做self- attention)，最后再把这12个头的输出拼接起来，又变成了197 x 768。再过一层Layer Norm，还是197 x 768，再过一层MLP，先把维度放大(放大4倍)，变为197 x 3072，再缩小(投射回去)，变为197 x 768；
+- 进去是197 x 768，出来还是197 x 768，然后叠加多个这样的BLOCK，想加多少加多少。L层的Transformer Block就是Transformer Encoder。
+
+### Experiment
+
+#### Ablation Experiment 
+
+##### 1.class token 
+
+为了和原始的Transformer模型尽可能保持一致，本文也使用了class token，当作图像的整体特征。该class token的输出通过一层MLP就可以做分类预测了，MLP使用**tanh**当作非线性激活函数。原来不是这么做的，比如有个残差网络(ResNet50)，假设其包含Res2、Res3、Res4、Res5四个Block，Res5出来的是一个feature map(14 x 14)，在该feature map之上做了一个GAP(global average-pooling)操作，池化后的特征被拉直称一个向量，拿这个特征去做分类。现在对于Transformer来说，进去N个元素，出来也是有N个元素。问题来了，为什么不能用这N个输出去做GAP，得到最后的特征，而是在前面加一个class token，最后用class token去做输出？作者通过实验得出的结论：其实这两种方式都可以。
+
+##### 2.Positional Embedding
+
+作者对比了三种位置编码：1-d positional embedding，2-d positional embedding和relative positional embedding。
+
+1-d positional embedding：NLP中常用的位置编码，也是本文从头到尾都在使用的位置编码；
+
+2-d positional embedding：把一个图片打成9宫格，表示为：1-9，而2-d位置编码表示为11，12，13，21，...，33；
+
+relative positional embedding：token和token之间的距离可以用相对距离来表示(offset)。
+
+作者通过实验得出的结论：其实这三种方式都可以。
+
